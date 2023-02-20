@@ -1,10 +1,7 @@
 // Функция JS для проверки длины строки
 
 function checkingLengthString (string, numberCharacters) {
-  if (string.length <= numberCharacters) {
-    return true;
-  }
-  return false;
+  return string.length <= numberCharacters;
 }
 
 checkingLengthString('проверяемая строка', 20);
@@ -14,14 +11,7 @@ checkingLengthString('проверяемая строка', 10);
 // Функция JS для проверки, является ли строка палиндромом
 
 function palindromeCheck(string) {
-  const str = string.replaceAll(' ', '').toLowerCase();
-  const half = Math.floor(str.length / 2);
-  for (let i = 0; i < half; i++) {
-    if (str[i] !== str[str.length - i - 1]) {
-      return false;
-    }
-    return true;
-  }
+  return string.split('').reverse().join('').replaceAll(' ', '').toLowerCase() === string.replaceAll(' ', '').toLowerCase();
 }
 
 palindromeCheck('Топот');
@@ -32,10 +22,7 @@ palindromeCheck('Лёша на полке клопа нашёл ');
 // Функция JS, которая принимает строку и возвращает положительные числа
 
 function returnNumber (string) {
-  let number = string.replace(/\D/g, '');
-  if (number === '') {
-    number = NaN;
-  }
+  const number = string.replace(/\D/g, '');
   return parseFloat(number);
 }
 
