@@ -1,29 +1,3 @@
-// Функция для определния случайного числа
-function randomInteger(min, max) {
-  let rand = min + Math.random() * (max + 1 - min);
-  return Math.floor(rand);
-}
-
-// Функция для получения уникальных индификаторов
-function createRandomIdFromRangeGenerator (min, max) {
-  const previousValues = [];
-
-  return function () {
-    let currentValue = randomInteger(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      console.error('Перебраны все числа из диапазона от ' + min + ' до ' + max);
-      return null;
-    }
-    while (previousValues.includes(currentValue)) {
-      currentValue = randomInteger(min, max);
-    }
-    previousValues.push(currentValue);
-    return currentValue;
-  };
-}
-
-const generateId = createRandomIdFromRangeGenerator(1, 25);
-
 // Объект с описанием к фотографиям
 const photoDescription = {
   1: 'Бухта с галечным пляжем',
@@ -53,47 +27,93 @@ const photoDescription = {
   25: 'Переправа через реку с бегемотами',
 };
 
-// Лайки
-const numberOfLikes = randomInteger(15, 200);
+// Начальное и конечное значение id
+const initialValueId = 1;
+const finalValueId = 25;
 
-//Уникальный индификатор для комметария
-const generateIdComment = createRandomIdFromRangeGenerator(1, 1000);
+// Лайки
+const initialValueLikes = 15;
+const finalValueLikes = 200;
+
+const numberOfLikes = randomInteger(initialValueLikes, finalValueLikes);
+
+// Начальное и конечное значение id в комментариях
+const initialValueIdComment = 1;
+const finalValueIdComment = 1000;
+
 
 // Объекты с текстом комментария
-const textComment = {
-  1: 'Всё отлично!',
-  2: 'В целом всё неплохо. Но не всё.',
-  3: 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
-  4: 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
-  5: 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
-  6: 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
-};
+const textComment = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
+];
 
 // Объект с именами
-const name = {
-  1: 'Алиса',
-  2: 'Никита',
-  3: 'Сергей',
-  4: 'Наталья',
-  5: 'Арсений',
-  6: 'Мира',
-  7: 'Дмитрий',
-  8: 'Юлия',
-  9: 'Константин',
-  10: 'Виктория',
-};
+const name = [
+  'Алиса',
+  'Никита',
+  'Сергей',
+  'Наталья',
+  'Арсений',
+  'Мира',
+  'Дмитрий',
+  'Юлия',
+  'Константин',
+  'Виктория',
+];
+
+// Начальное и конечное значения аватата и имени
+
+const initialValueAvatar = 1;
+const finalValueAvatar = 6;
+
+const initialValueName = 1;
+const finalValueName = 10;
+
+// Функция для определния случайного числа
+function randomInteger(min, max) {
+  const rand = min + Math.random() * (max + 1 - min);
+  return Math.floor(rand);
+}
+
+// Функция для получения уникальных индификаторов
+function createRandomIdFromRangeGenerator (min, max) {
+  const previousValues = [];
+
+  return function () {
+    let currentValue = randomInteger(min, max);
+    if (previousValues.length >= (max - min + 1)) {
+      throw new Error('Перебраны все числа из диапазона от ' + min + ' до ' + max);
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = randomInteger(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
+}
+
+const generateId = createRandomIdFromRangeGenerator(initialValueId, finalValueId);
+
+//Уникальный индификатор для комметария
+const generateIdComment = createRandomIdFromRangeGenerator(initialValueIdComment, finalValueIdComment);
 
 // Генерация объекта комментария
 const createComment = () => {
-  const numberOfAvatar = randomInteger(1, 6);
-  const numberOfName = randomInteger(1, 10);
+  const numberOfAvatar = randomInteger(initialValueAvatar, finalValueAvatar);
+  const numberOfName = randomInteger(initialValueName, finalValueName);
   const uniqueNumber = generateIdComment();
 
     return {
       id: uniqueNumber,
-      avatar: 'img/avatar-' + numberOfAvatar + '.svg',
-      message: textComment[numberOfAvatar],
-      name: name[numberOfName],
+      avatar: `img/avatar-${numberOfAvatar}.svg`,
+      message: textComment[numberOfAvatar - 1],
+      name: name[numberOfName - 1],
     };
   };
 
@@ -103,7 +123,7 @@ const uniqueNumber = generateId();
 
   return {
     id: uniqueNumber,
-    url: 'photos/' + uniqueNumber + '.jpg',
+    url: `photos/${uniqueNumber}.jpg`,
     description: photoDescription[uniqueNumber],
     likes: numberOfLikes,
     comments: [createComment(), createComment()]
