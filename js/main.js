@@ -1,5 +1,6 @@
 // Объект с описанием к фотографиям
-const photoDescription = {
+
+const PHOTO_DESCRIPTION = {
   1: 'Бухта с галечным пляжем',
   2: 'Указатель на пляж',
   3: 'Пляж на необитаемом острове',
@@ -28,22 +29,20 @@ const photoDescription = {
 };
 
 // Начальное и конечное значение id
-const initialValueId = 1;
-const finalValueId = 25;
+const INITIAL_VALUE_ID = 1;
+const FINAL_VALUE_ID = 25;
 
 // Лайки
-const initialValueLikes = 15;
-const finalValueLikes = 200;
-
-const numberOfLikes = randomInteger(initialValueLikes, finalValueLikes);
+const INITIAL_VALUE_LIKES = 15;
+const FINAL_VALUE_LIKES = 200;
 
 // Начальное и конечное значение id в комментариях
-const initialValueIdComment = 1;
-const finalValueIdComment = 1000;
+const INITIAL_VALUE_ID_COMMENT = 1;
+const FINAL_VALUE_ID_COMMENT = 1000;
 
 
-// Объекты с текстом комментария
-const textComment = [
+// Массив с текстом комментария
+const TEXT_COMMENTS = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -53,7 +52,7 @@ const textComment = [
 ];
 
 // Объект с именами
-const name = [
+const NAMES = [
   'Алиса',
   'Никита',
   'Сергей',
@@ -68,11 +67,11 @@ const name = [
 
 // Начальное и конечное значения аватата и имени
 
-const initialValueAvatar = 1;
-const finalValueAvatar = 6;
+const INITIAL_VALUE_AVATAR = 1;
+const FINAL_VALUE_AVATAR = 6;
 
-const initialValueName = 1;
-const finalValueName = 10;
+const INITIAL_VALUE_NAME = 1;
+const FINAL_VALUE_NAME = 10;
 
 // Функция для определния случайного числа
 function randomInteger(min, max) {
@@ -87,7 +86,7 @@ function createRandomIdFromRangeGenerator (min, max) {
   return function () {
     let currentValue = randomInteger(min, max);
     if (previousValues.length >= (max - min + 1)) {
-      throw new Error('Перебраны все числа из диапазона от ' + min + ' до ' + max);
+      throw new Error(`Перебраны все числа из диапазона от ${min} до ${max}`);
       return null;
     }
     while (previousValues.includes(currentValue)) {
@@ -98,34 +97,41 @@ function createRandomIdFromRangeGenerator (min, max) {
   };
 }
 
-const generateId = createRandomIdFromRangeGenerator(initialValueId, finalValueId);
+const generateId = createRandomIdFromRangeGenerator(INITIAL_VALUE_ID, FINAL_VALUE_ID);
 
 //Уникальный индификатор для комметария
-const generateIdComment = createRandomIdFromRangeGenerator(initialValueIdComment, finalValueIdComment);
+const generateIdComment = createRandomIdFromRangeGenerator(INITIAL_VALUE_ID_COMMENT, FINAL_VALUE_ID_COMMENT);
 
 // Генерация объекта комментария
 const createComment = () => {
-  const numberOfAvatar = randomInteger(initialValueAvatar, finalValueAvatar);
-  const numberOfName = randomInteger(initialValueName, finalValueName);
+  const numberOfAvatar = randomInteger(INITIAL_VALUE_AVATAR, FINAL_VALUE_AVATAR);
+  const numberOfName = randomInteger(INITIAL_VALUE_NAME, FINAL_VALUE_NAME);
   const uniqueNumber = generateIdComment();
 
-    return {
-      id: uniqueNumber,
-      avatar: `img/avatar-${numberOfAvatar}.svg`,
-      message: textComment[numberOfAvatar - 1],
-      name: name[numberOfName - 1],
-    };
+  return {
+    id: uniqueNumber,
+    avatar: `img/avatar-${numberOfAvatar}.svg`,
+    message: TEXT_COMMENTS[numberOfAvatar - 1],
+    name: NAMES[numberOfName - 1],
   };
+};
 
 // Функция для генерации объектов
 const createPhoto = () => {
-const uniqueNumber = generateId();
+  const uniqueNumber = generateId();
 
   return {
     id: uniqueNumber,
     url: `photos/${uniqueNumber}.jpg`,
-    description: photoDescription[uniqueNumber],
-    likes: numberOfLikes,
+    description: PHOTO_DESCRIPTION[uniqueNumber],
+    likes: randomInteger(INITIAL_VALUE_LIKES, FINAL_VALUE_LIKES),
     comments: [createComment(), createComment()]
   };
 };
+
+const getPictures = () =>
+  Array.from({length: FINAL_VALUE_ID}, (_,pictureIndex) =>
+    createPhoto(pictureIndex + 1)
+  );
+
+getPictures();
