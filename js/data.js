@@ -115,4 +115,4 @@ const getPictures = () =>
     createPhoto(pictureIndex + 1)
   );
 
-console.log(getPictures());
+getPictures();
