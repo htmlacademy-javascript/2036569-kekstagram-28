@@ -22,6 +22,5 @@ function createRandomIdFromRangeGenerator (min, max) {
   };
 }
 
-export {randomInteger};
-export {createRandomIdFromRangeGenerator};
+export {randomInteger, createRandomIdFromRangeGenerator};
 

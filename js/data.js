@@ -1,5 +1,4 @@
-import {randomInteger} from './util.js';
-import {createRandomIdFromRangeGenerator} from './util.js';
+import {randomInteger, createRandomIdFromRangeGenerator} from './util.js';
 
 // Объект с описанием к фотографиям
 const PHOTO_DESCRIPTION = {
@@ -116,4 +115,4 @@ const getPictures = () =>
     createPhoto(pictureIndex + 1)
   );
 
-getPictures();
+console.log(getPictures());
