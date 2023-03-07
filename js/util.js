@@ -21,6 +21,5 @@ function createRandomIdFromRangeGenerator (min, max) {
     return currentValue;
   };
 }
-
 export {randomInteger, createRandomIdFromRangeGenerator};
 
