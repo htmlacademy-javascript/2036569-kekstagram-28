@@ -115,4 +115,4 @@ const getPictures = () =>
     createPhoto(pictureIndex + 1)
   );
 
-getPictures();
+export{getPictures};
