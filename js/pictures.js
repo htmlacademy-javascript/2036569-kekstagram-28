@@ -1,17 +1,11 @@
 import {getPictures} from './data.js';
-import {addBigPicture} from './full-photo.js';
+import {addBigPicture, deleteComments} from './full-photo.js';
 
 const pictures = document.querySelector('.pictures');
 
 const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
-
-const deleteComments = () => {
-  for (let i = 0; document.querySelectorAll('.social__comment').length; i++) {
-    document.querySelector('.social__comment').remove();
-  }
-};
 
 const patternPhoto = getPictures();
 

@@ -11,18 +11,19 @@ let postComments;
 
 const genFiveComments = (comments) => {
   for (let i = 0; i < comments.length; i++) {
-    loadedCommentsCounter++;
     const comment = document.createElement('li');
     comment.classList.add('social__comment');
-
     const img = document.createElement('img');
+    const p = document.createElement('p');
+
+    loadedCommentsCounter++;
+
     img.classList.add('social__picture');
     img.src = comments[i].avatar;
     img.alt = comments[i].name;
     img.width = '35';
     img.height = '35';
 
-    const p = document.createElement('p');
     p.classList.add('social__text');
     p.textContent = comments[i].message;
 
@@ -95,4 +96,4 @@ document.addEventListener('keydown', (evt) => {
   }
 });
 
-export {addBigPicture};
+export {addBigPicture, deleteComments};
