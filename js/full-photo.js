@@ -36,8 +36,8 @@ const genFiveComments = (comments) => {
   }
 };
 
-const slicePost = (comments) => {
-  genFiveComments(comments);
+const slicePost = (comment) => {
+  genFiveComments(comment.slice(loadedCommentsCounter, loadedCommentsCounter + 5));
   document.querySelector('.current-comments-count').textContent = loadedCommentsCounter;
 };
 
@@ -62,17 +62,9 @@ const addBigPicture = (post) => {
   commentsLoader.addEventListener('click', loadFiveCmts);
   bigPicture.querySelector('.social__caption').textContent = post.description;
   document.querySelector('body').classList.add('modal-open');
-  commentsLoader.classList.add('hidden');
-};
-
-const deleteComments = () => {
-  for (let i = 0; document.querySelectorAll('.social__comment').length; i++) {
-    document.querySelector('.social__comment').remove();
-  }
 };
 
 const closeBigPicture = () => {
-  deleteComments();
   bigPicture.classList.add('hidden');
   bigPicture.querySelector('.social__comment-count').classList.remove('hidden');
   bigPicture.querySelector('.comments-loader').classList.remove('hidden');
@@ -96,4 +88,4 @@ document.addEventListener('keydown', (evt) => {
   }
 });
 
-export {addBigPicture, deleteComments};
+export {addBigPicture};

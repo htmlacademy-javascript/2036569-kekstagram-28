@@ -1,5 +1,5 @@
 import {getPictures} from './data.js';
-import {addBigPicture, deleteComments} from './full-photo.js';
+import {addBigPicture} from './full-photo.js';
 
 const pictures = document.querySelector('.pictures');
 
@@ -17,13 +17,12 @@ const renderPhoto = () => {
     photo.querySelector('.picture__img').src = post.url;
     photo.querySelector('.picture__likes').textContent = post.likes;
     photo.querySelector('.picture__comments').textContent = post.comments.length;
-    patternPhotoFragment.appendChild(photo);
+    patternPhotoFragment.append(photo);
     photo.addEventListener('click', () => {
-      deleteComments();
       addBigPicture(post);
     });
   });
-  pictures.appendChild(patternPhotoFragment);
+  pictures.append(patternPhotoFragment);
 };
 
 renderPhoto();
