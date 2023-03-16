@@ -89,4 +89,3 @@ document.addEventListener('keydown', (evt) => {
 });
 
 export {addBigPicture};
-
