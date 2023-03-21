@@ -38,6 +38,7 @@ const genFiveComments = (comments) => {
 };
 
 const slicePost = (comment) => {
+  genFiveComments(comment.slice(loadedCommentsCounter, loadedCommentsCounter + NUMBER_OF_COMMENTS_SHOWN));
   document.querySelector('.current-comments-count').textContent = loadedCommentsCounter;
 };
 
