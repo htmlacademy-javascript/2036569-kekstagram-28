@@ -104,7 +104,6 @@ const createPhoto = () => {
     url: `photos/${uniqueNumber}.jpg`,
     description: PHOTO_DESCRIPTION[uniqueNumber],
     likes: randomInteger(INITIAL_VALUE_LIKES, FINAL_VALUE_LIKES),
-    comments: Array.from({length: randomInteger(1,10)}, (_,commentIndex) =>
       createComment(commentIndex + 1)
     ),
   };
