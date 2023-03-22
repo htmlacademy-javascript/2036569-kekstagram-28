@@ -5,6 +5,7 @@ const bigPicture = document.querySelector('.big-picture');
 const social = bigPicture.querySelector('.social');
 const commentsLoader = social.querySelector('.comments-loader');
 
+const NUMBER_OF_COMMENTS_SHOWN = 5;
 let postCommentsCounter = 0;
 let loadedCommentsCounter = 0;
 let postComments;
@@ -37,7 +38,7 @@ const genFiveComments = (comments) => {
 };
 
 const slicePost = (comment) => {
-  genFiveComments(comment.slice(loadedCommentsCounter, loadedCommentsCounter + 5));
+  genFiveComments(comment.slice(loadedCommentsCounter, loadedCommentsCounter + NUMBER_OF_COMMENTS_SHOWN));
   document.querySelector('.current-comments-count').textContent = loadedCommentsCounter;
 };
 
