@@ -1,7 +1,5 @@
-// const effectsRadio = document.querySelector('.effects__radio');
-const effectsUpload = document.querySelector('.img-upload__effects');
 const imageUploadPreview = document.querySelector('.img-upload__preview');
-const effectsLevel = document.querySelector('.img-upload__effect-level');
+const effectsLevel = document.querySelector('.effect-level__slider');
 const effectsValue = document.querySelector('.effect-level__value');
 
 const effects = {
@@ -58,8 +56,46 @@ noUiSlider.create(effectsLevel, {
     max:100,
   },
   start: 0,
+  step: 0,
 });
 
-effectsUpload.addEventListener('click', (evt) => {
-  imageUploadPreview.className = `img-upload__preview effects__preview--${evt.target.value}`;
-});
+let elementaryEffect = 'effects__preview--none';
+
+const updateSliderOptions = (newOptions) => {
+  effectsLevel.noUiSlider.updateOptions({
+    range: {
+      min: newOptions.min,
+      max: newOptions.max
+    },
+    start: newOptions.start,
+    step: newOptions.step
+  });
+};
+
+const onUpdateSlider = (effect) => {
+  effectsLevel.noUiSlider.on('update', () => {
+    effectsValue.value = effectsLevel.noUiSlider.get();
+    const filter = effects[effect].filter.replace(' ', effectsValue.value);
+    imageUploadPreview.style.filter = filter;
+  });
+};
+
+const changeEffect = (evt) => {
+  const nameNewEffect = evt.target.value;
+  const newEffect = `effects__preview--${nameNewEffect}`;
+  imageUploadPreview.classList.remove(elementaryEffect);
+  imageUploadPreview.classList.add(newEffect);
+  elementaryEffect = newEffect;
+  if (nameNewEffect === 'none') {
+    imageUploadPreview.style.filter = 'none';
+    effectsLevel.classList.toggle('hidden');
+  } else {
+    if(effectsLevel.classList.contains('hidden')) {
+      effectsLevel.classList.remove('hidden');
+    }
+    updateSliderOptions(effects[nameNewEffect].options);
+    onUpdateSlider(nameNewEffect);
+  }
+};
+
+export{changeEffect};
