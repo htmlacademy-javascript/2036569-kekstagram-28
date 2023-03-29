@@ -1,9 +1,16 @@
 import {isEscapeKey} from './util.js';
+import {errorAlert} from './util.js';
+import {sendData} from './api.js';
 
 const imageUpload = document.querySelector('.img-upload__form');
 const imageHashtags = document.querySelector('.text__hashtags');
 const imageDescription = document.querySelector('.text__description');
+const submitButton = document.querySelector('.img-upload__submit');
 
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикуется...'
+};
 
 const HASHTAG_VALID_REGEX = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
 const MAX_SYMBOL_COMMENT = 140;
@@ -17,6 +24,16 @@ const pristine = new Pristine(imageUpload, {
   errorTextTag: 'div',
   errorTextClass: 'img-upload__error'
 });
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.IDLE;
+};
 
 function validateHashtags (value) {
 
@@ -46,8 +63,23 @@ const stopHandlerWhenFocused = (evt) => {
 imageDescription.onkeydown = stopHandlerWhenFocused;
 imageHashtags.onkeydown = stopHandlerWhenFocused;
 
-imageHashtags.addEventListener('submit', (evt) => {
-  evt.preventDefault();
+const setUserFormSubmit = (onSuccess) => {
+  imageUpload.addEventListener('submit', (evt) => {
+    evt.preventDefault();
 
-  pristine.validate();
-});
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(new FormData(evt.target))
+        .then(onSuccess)
+        .catch(
+          (err) => {
+            errorAlert(err.message);
+          }
+        )
+        .finally(unblockSubmitButton);
+    }
+  });
+};
+
+export {setUserFormSubmit};
