@@ -1,4 +1,3 @@
-import {getPictures} from './data.js';
 import {addBigPicture} from './full-photo.js';
 
 const pictures = document.querySelector('.pictures');
@@ -7,12 +6,10 @@ const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const patternPhoto = getPictures();
-
-const renderPhoto = () => {
+const renderPhoto = (cratePicture) => {
   const patternPhotoFragment = document.createDocumentFragment();
 
-  patternPhoto.forEach((post) => {
+  cratePicture.forEach((post) => {
     const photo = pictureTemplate.cloneNode(true);
     photo.querySelector('.picture__img').src = post.url;
     photo.querySelector('.picture__likes').textContent = post.likes;
@@ -25,6 +22,4 @@ const renderPhoto = () => {
   pictures.append(patternPhotoFragment);
 };
 
-renderPhoto();
-
-
+export {renderPhoto};

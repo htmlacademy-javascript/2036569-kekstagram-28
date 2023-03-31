@@ -1,6 +1,7 @@
 import {isEscapeKey, isEnterKey} from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
+const bigPic = document.querySelector('.img-upload__overlay');
 
 const social = bigPicture.querySelector('.social');
 const commentsLoader = social.querySelector('.comments-loader');
@@ -89,4 +90,9 @@ document.addEventListener('keydown', (evt) => {
   }
 });
 
-export {addBigPicture};
+const closeUploadPhoto = () => {
+  bigPic.classList.add('hidden');
+  document.querySelector('body').classList.remove('modal-open');
+};
+
+export {addBigPicture, closeUploadPhoto};
