@@ -1,6 +1,6 @@
-// Функция для определния случайного числа
 const ALERT_ERROR_TIME = 5000;
 
+// Функция для определния случайного числа
 function randomInteger(min, max) {
   const rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
@@ -54,5 +54,24 @@ const errorAlert = (message) => {
   }, ALERT_ERROR_TIME);
 };
 
-export {randomInteger, createRandomIdFromRangeGenerator, isEscapeKey, isEnterKey, errorAlert};
+const randomElement = (array, count) => {
+  const result = [];
+  for (let i = 0; i < count; i++) {
+    const randElem = array[randomInteger(0, array.length - 1)];
+    result.push(randElem);
+    array.splice(array.indexOf(randElem), 1);
+  }
+  return result;
+};
+
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export {randomInteger, createRandomIdFromRangeGenerator, isEscapeKey, isEnterKey, errorAlert, randomElement, debounce};
 
