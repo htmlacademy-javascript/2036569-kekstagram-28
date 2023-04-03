@@ -7,6 +7,7 @@ import './forms.js';
 import './scale.js';
 import './effect.js';
 import './api.js';
+import './uploading-image.js';
 import {applicationFilter} from './pictures.js';
 import {getData} from './api.js';
 import {closeUploadPhoto} from './full-photo.js';
