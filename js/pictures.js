@@ -12,7 +12,7 @@ const filterDefailt = document.querySelector('#filter-default');
 const filterRandom = document.querySelector('#filter-random');
 const filterDiscussed = document.querySelector('#filter-discussed');
 
-let newPost = [];
+let newPosts = [];
 let tempForPosts = [];
 
 const renderPhoto = () => {
@@ -20,7 +20,7 @@ const renderPhoto = () => {
   tempForPosts = [];
 
   const patternPhotoFragment = document.createDocumentFragment();
-  newPost
+  newPosts
     .forEach((post) => {
       const photo = pictureTemplate.cloneNode(true);
       photo.querySelector('.picture__img').src = post.url;
@@ -37,7 +37,7 @@ const renderPhoto = () => {
 
 const changeFilter = (post, cb) => {
   imgFilterForms.addEventListener('click', (evt) => {
-    newPost = [...post];
+    newPosts = [...post];
     if(evt.target.id === 'filter-default') {
       filterDefailt.classList.add('img-filters__button--active');
       filterRandom.classList.remove('img-filters__button--active');
@@ -46,12 +46,12 @@ const changeFilter = (post, cb) => {
       filterDefailt.classList.remove('img-filters__button--active');
       filterRandom.classList.add('img-filters__button--active');
       filterDiscussed.classList.remove('img-filters__button--active');
-      newPost = randomElement(newPost, 10);
+      newPosts = randomElement(newPosts, 10);
     } if(evt.target.id === 'filter-discussed') {
       filterDefailt.classList.remove('img-filters__button--active');
       filterRandom.classList.remove('img-filters__button--active');
       filterDiscussed.classList.add('img-filters__button--active');
-      newPost.sort((a,b) => b.comments.length - a.comments.length);
+      newPosts.sort((a,b) => b.comments.length - a.comments.length);
     }
     cb();
   });
@@ -59,7 +59,7 @@ const changeFilter = (post, cb) => {
 
 const applicationFilter = (post) => {
   imgFilters.classList.remove('img-filters--inactive');
-  newPost = [...post];
+  newPosts = [...post];
   renderPhoto();
   changeFilter(post, debounce(() => renderPhoto(), 500));
 };
