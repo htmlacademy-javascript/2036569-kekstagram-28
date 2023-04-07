@@ -72,30 +72,40 @@ const updateSliderOptions = (newOptions) => {
   });
 };
 
-const onUpdateSlider = (effect) => {
-  effectsLevel.noUiSlider.on('update', () => {
-    effectsValue.value = effectsLevel.noUiSlider.get();
+const removeFilter = () => {
+  imageUploadPreview.classList.remove(elementaryEffect);
+  imageUploadPreview.classList.add('effects__preview--none');
+  imageUploadPreview.style.filter = 'none';
+  effectsLevel.classList.toggle('hidden');
+  elementaryEffect = 'effects__preview--none';
+};
+
+const onUpdateSlider = (slider, effect) => {
+  slider.noUiSlider.on('update', () => {
+    effectsValue.value = slider.noUiSlider.get();
     const filter = effects[effect].filter.replace(' ', effectsValue.value);
     imageUploadPreview.style.filter = filter;
   });
 };
 
 const changeEffect = (evt) => {
-  const nameNewEffect = evt.target.value;
-  const newEffect = `effects__preview--${nameNewEffect}`;
-  imageUploadPreview.classList.remove(elementaryEffect);
-  imageUploadPreview.classList.add(newEffect);
-  elementaryEffect = newEffect;
-  if (nameNewEffect === 'none') {
-    imageUploadPreview.style.filter = 'none';
-    effectsLevel.classList.toggle('hidden');
-  } else {
-    if(effectsLevel.classList.contains('hidden')) {
-      effectsLevel.classList.remove('hidden');
+  if(evt.target.name === 'effect') {
+    const nameNewEffect = evt.target.value;
+    const newEffect = `effects__preview--${nameNewEffect}`;
+    imageUploadPreview.classList.remove(elementaryEffect);
+    imageUploadPreview.classList.add(newEffect);
+    elementaryEffect = newEffect;
+    if (nameNewEffect === 'none') {
+      imageUploadPreview.style.filter = 'none';
+      effectsLevel.classList.toggle('hidden');
+    } else {
+      if(effectsLevel.classList.contains('hidden')) {
+        effectsLevel.classList.remove('hidden');
+      }
+      updateSliderOptions(effects[nameNewEffect].options);
+      onUpdateSlider(effectsLevel, nameNewEffect);
     }
-    updateSliderOptions(effects[nameNewEffect].options);
-    onUpdateSlider(nameNewEffect);
   }
 };
 
-export{changeEffect};
+export{changeEffect, removeFilter};

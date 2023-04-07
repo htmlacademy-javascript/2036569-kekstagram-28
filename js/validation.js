@@ -40,12 +40,14 @@ function validateHashtags (value) {
   const hashTagArray = value.toLowerCase().trim().split(' ');
   const uniqueHashTag = [...new Set(hashTagArray)];
 
+  if(uniqueHashTag.length === 1) {
+    return true;
+  }
   for (const hashtag of uniqueHashTag) {
     if(!HASHTAG_VALID_REGEX.test(hashtag)) {
       return false;
     }
   }
-
   return hashTagArray.length <= MAX_HASHTAG_NUMBERS && hashTagArray.length === uniqueHashTag.length;
 }
 

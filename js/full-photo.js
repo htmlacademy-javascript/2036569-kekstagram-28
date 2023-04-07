@@ -1,12 +1,12 @@
 import {isEscapeKey, isEnterKey} from './util.js';
 
+const NUMBER_OF_COMMENTS_SHOWN = 5;
 const bigPicture = document.querySelector('.big-picture');
 const bigPic = document.querySelector('.img-upload__overlay');
 
 const social = bigPicture.querySelector('.social');
 const commentsLoader = social.querySelector('.comments-loader');
 
-const NUMBER_OF_COMMENTS_SHOWN = 5;
 let postCommentsCounter = 0;
 let loadedCommentsCounter = 0;
 let postComments;
