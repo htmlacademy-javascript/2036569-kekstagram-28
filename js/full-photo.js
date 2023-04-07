@@ -1,4 +1,5 @@
 import {isEscapeKey, isEnterKey} from './util.js';
+import {removeForm} from './forms.js';
 
 const NUMBER_OF_COMMENTS_SHOWN = 5;
 const bigPicture = document.querySelector('.big-picture');
@@ -93,6 +94,7 @@ document.addEventListener('keydown', (evt) => {
 const closeUploadPhoto = () => {
   bigPic.classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
+  removeForm();
 };
 
 export {addBigPicture, closeUploadPhoto};
