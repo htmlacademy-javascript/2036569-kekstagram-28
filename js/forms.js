@@ -36,3 +36,5 @@ document.addEventListener('keydown', (evt) => {
     removeForm();
   }
 });
+
+export {removeForm};
