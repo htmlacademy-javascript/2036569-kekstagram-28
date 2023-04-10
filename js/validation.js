@@ -1,6 +1,11 @@
 import {isEscapeKey} from './util.js';
-import {errorAlert} from './util.js';
+import {errorOutput} from './util.js';
 import {sendData} from './api.js';
+import {removeForm} from './forms.js';
+
+const HASHTAG_VALID_REGEX = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
+const MAX_SYMBOL_COMMENT = 140;
+const MAX_HASHTAG_NUMBERS = 5;
 
 const imageUpload = document.querySelector('.img-upload__form');
 const imageHashtags = document.querySelector('.text__hashtags');
@@ -11,10 +16,6 @@ const SubmitButtonText = {
   IDLE: 'Опубликовать',
   SENDING: 'Публикуется...'
 };
-
-const HASHTAG_VALID_REGEX = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
-const MAX_SYMBOL_COMMENT = 140;
-const MAX_HASHTAG_NUMBERS = 5;
 
 const pristine = new Pristine(imageUpload, {
   classTo: 'img-upload__field-wrapper',
@@ -35,20 +36,60 @@ const unblockSubmitButton = () => {
   submitButton.textContent = SubmitButtonText.IDLE;
 };
 
+const closeMessage = (message) => {
+  document.body.removeChild(message);
+};
+
+const closeMessageByEscape = (message) => {
+  if (isEscapeKey) {
+    closeMessage(message);
+  }
+};
+
+const closeMessageByOutside = (evt, message) => {
+  if (evt.target.className === 'error' || evt.target.className === 'success') {
+    closeMessage(message);
+  }
+};
+
+const messageGenearte = (marker) => {
+  let messageID = 0;
+  if (marker) {
+    messageID = document.querySelector('#success').content.querySelector('section');
+  } else {
+    messageID = document.querySelector('#error').content.querySelector('section');
+  }
+  const message = messageID.cloneNode(true);
+  const button = message.querySelector('button');
+  document.body.appendChild(message);
+  button.addEventListener('click',() => closeMessage(message));
+  message.addEventListener('click', (evt) => {
+    closeMessageByOutside(evt, message);
+  });
+  document.addEventListener('keydown', () => {
+    closeMessageByEscape(message);
+  });
+};
+
+const success = () => {
+  removeForm();
+  messageGenearte(true);
+};
+
 function validateHashtags (value) {
 
   const hashTagArray = value.toLowerCase().trim().split(' ');
-  const uniqueHashTag = [...new Set(hashTagArray)];
+  const uniqueHashTags = [...new Set(hashTagArray)];
 
-  if(uniqueHashTag.length === 1) {
+  if(uniqueHashTags.length === 1) {
     return true;
   }
-  for (const hashtag of uniqueHashTag) {
+  for (const hashtag of uniqueHashTags) {
     if(!HASHTAG_VALID_REGEX.test(hashtag)) {
       return false;
     }
   }
-  return hashTagArray.length <= MAX_HASHTAG_NUMBERS && hashTagArray.length === uniqueHashTag.length;
+  return hashTagArray.length <= MAX_HASHTAG_NUMBERS && hashTagArray.length === uniqueHashTags.length;
 }
 
 const validateComment = (value) => value.length <= MAX_SYMBOL_COMMENT;
@@ -56,14 +97,14 @@ const validateComment = (value) => value.length <= MAX_SYMBOL_COMMENT;
 pristine.addValidator(imageHashtags, validateHashtags, 'Введен неверный Хэш-тег, количество Хэш-тегов не больше 5');
 pristine.addValidator(imageDescription, validateComment, 'Количество символов не должно привышать 140');
 
-const stopHandlerWhenFocused = (evt) => {
+const stopWhenFocused = (evt) => {
   if (isEscapeKey) {
     evt.stopPropagation();
   }
 };
 
-imageDescription.onkeydown = stopHandlerWhenFocused;
-imageHashtags.onkeydown = stopHandlerWhenFocused;
+imageDescription.onkeydown = stopWhenFocused;
+imageHashtags.onkeydown = stopWhenFocused;
 
 const setUserFormSubmit = (onSuccess) => {
   imageUpload.addEventListener('submit', (evt) => {
@@ -76,7 +117,7 @@ const setUserFormSubmit = (onSuccess) => {
         .then(onSuccess)
         .catch(
           (err) => {
-            errorAlert(err.message);
+            errorOutput(err.message);
           }
         )
         .finally(unblockSubmitButton);
@@ -84,4 +125,4 @@ const setUserFormSubmit = (onSuccess) => {
   });
 };
 
-export {setUserFormSubmit};
+export {setUserFormSubmit, success};

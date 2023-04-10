@@ -57,7 +57,7 @@ const changeFilter = (post, cb) => {
   });
 };
 
-const applicationFilter = (post) => {
+const applyingFilter = (post) => {
   imgFilters.classList.remove('img-filters--inactive');
   newPosts = [...post];
   renderPhoto();
@@ -65,4 +65,4 @@ const applicationFilter = (post) => {
 };
 
 
-export {renderPhoto, applicationFilter};
+export {renderPhoto, applyingFilter};

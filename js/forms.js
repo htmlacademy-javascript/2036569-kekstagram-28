@@ -1,5 +1,6 @@
 import {isEscapeKey} from './util.js';
 import {changeEffect, removeFilter} from './effect.js';
+import {imageUploadPreview, valueScale} from './scale.js';
 
 const uploadFile = document.querySelector('#upload-file');
 const imageOverlay = document.querySelector('.img-upload__overlay');
@@ -16,6 +17,8 @@ const removeForm = () => {
   uploadFile.value = '';
   imageDescription.value = '';
   imageHashtags.value = '';
+  valueScale.value = '100%';
+  imageUploadPreview.style = 'transform: scale(1)';
   uploadForm.removeEventListener('change', changeEffect);
   removeFilter();
 };

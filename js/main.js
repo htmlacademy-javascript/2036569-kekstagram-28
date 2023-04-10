@@ -7,14 +7,14 @@ import './scale.js';
 import './effect.js';
 import './api.js';
 import './uploading-image.js';
-import {applicationFilter} from './pictures.js';
+import {applyingFilter} from './pictures.js';
 import {getData} from './api.js';
 import {closeUploadPhoto} from './full-photo.js';
 import {setUserFormSubmit} from './validation.js';
 
 getData()
   .then((picture) => {
-    applicationFilter(picture);
+    applyingFilter(picture);
   });
 
 setUserFormSubmit(closeUploadPhoto);
