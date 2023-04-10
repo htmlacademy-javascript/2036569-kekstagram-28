@@ -1,29 +1,34 @@
+const STEP_SCALE = 25;
+const MAX_STEP = 100;
+
 const imageUploadPreview = document.querySelector('.img-upload__preview');
 const buttonSmaller = document.querySelector('.scale__control--smaller');
 const buttonBigger = document.querySelector('.scale__control--bigger');
 const valueScale = document.querySelector('.scale__control--value');
 
-let scale = valueScale.value.replace('%', ' ');
+let scale = +valueScale.value.replace('%', ' ');
 
-const minus = () => {
-  if(scale - 25 < 25) {
-    scale = 25;
+const subtraction = () => {
+  if(scale - STEP_SCALE < STEP_SCALE) {
+    scale = STEP_SCALE;
   } else {
-    scale -= 25;
+    scale -= STEP_SCALE;
   }
   valueScale.value = `${scale}%`;
-  imageUploadPreview.style = `transform: scale(${scale / 100})`;
+  imageUploadPreview.style = `transform: scale(${scale / MAX_STEP})`;
 };
 
-const plus = () => {
-  if(scale + 25 > 100) {
-    scale = 100;
+const addition = () => {
+  if(scale + STEP_SCALE > MAX_STEP) {
+    scale = MAX_STEP;
   } else {
-    scale += 25;
+    scale += STEP_SCALE;
   }
   valueScale.value = `${scale}%`;
-  imageUploadPreview.style = `transform: scale(${scale / 100})`;
+  imageUploadPreview.style = `transform: scale(${scale / MAX_STEP})`;
 };
 
-buttonSmaller.addEventListener('click', minus);
-buttonBigger.addEventListener('click', plus);
+buttonSmaller.addEventListener('click', subtraction);
+buttonBigger.addEventListener('click', addition);
+
+export {imageUploadPreview, valueScale};

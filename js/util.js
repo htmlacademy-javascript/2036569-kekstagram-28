@@ -27,7 +27,7 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const isEnterKey = (evt) => evt.key === 'Enter';
 
-const errorAlert = (message) => {
+const errorOutput = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '10';
   alertContainer.style.position = 'absolute';
@@ -54,13 +54,13 @@ const errorAlert = (message) => {
 };
 
 const randomElement = (array, count) => {
-  const result = [];
+  const results = [];
   for (let i = 0; i < count; i++) {
     const randElem = array[randomInteger(0, array.length - 1)];
-    result.push(randElem);
+    results.push(randElem);
     array.splice(array.indexOf(randElem), 1);
   }
-  return result;
+  return results;
 };
 
 function debounce (callback, timeoutDelay = 500) {
@@ -72,5 +72,5 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-export {randomInteger, createRandomIdFromRangeGenerator, isEscapeKey, isEnterKey, errorAlert, randomElement, debounce};
+export {randomInteger, createRandomIdFromRangeGenerator, isEscapeKey, isEnterKey, errorOutput, randomElement, debounce};
 

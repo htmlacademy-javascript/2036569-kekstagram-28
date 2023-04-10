@@ -1,5 +1,5 @@
 import {isEscapeKey, isEnterKey} from './util.js';
-import {removeForm} from './forms.js';
+import {success} from './validation.js';
 
 const NUMBER_OF_COMMENTS_SHOWN = 5;
 const bigPicture = document.querySelector('.big-picture');
@@ -12,7 +12,7 @@ let postCommentsCounter = 0;
 let loadedCommentsCounter = 0;
 let postComments;
 
-const genFiveComments = (comments) => {
+const generatingFiveComments = (comments) => {
   for (let i = 0; i < comments.length; i++) {
     const comment = document.createElement('li');
     comment.classList.add('social__comment');
@@ -40,7 +40,7 @@ const genFiveComments = (comments) => {
 };
 
 const slicePost = (comment) => {
-  genFiveComments(comment.slice(loadedCommentsCounter, loadedCommentsCounter + NUMBER_OF_COMMENTS_SHOWN));
+  generatingFiveComments(comment.slice(loadedCommentsCounter, loadedCommentsCounter + NUMBER_OF_COMMENTS_SHOWN));
   document.querySelector('.current-comments-count').textContent = loadedCommentsCounter;
 };
 
@@ -94,7 +94,7 @@ document.addEventListener('keydown', (evt) => {
 const closeUploadPhoto = () => {
   bigPic.classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
-  removeForm();
+  success();
 };
 
 export {addBigPicture, closeUploadPhoto};
