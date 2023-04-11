@@ -11,6 +11,7 @@ const uploadForm = document.querySelector('.img-upload__form');
 const imageHashtags = document.querySelector('.text__hashtags');
 const imageDescription = document.querySelector('.text__description');
 
+
 const removeForm = () => {
   imageOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
