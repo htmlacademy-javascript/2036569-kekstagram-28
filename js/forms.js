@@ -1,6 +1,6 @@
-import {isEscapeKey} from './util.js';
 import {changeEffect, removeFilter} from './effect.js';
 import {imageUploadPreview, valueScale} from './scale.js';
+import {closeByEscape} from './validation.js';
 
 const uploadFile = document.querySelector('#upload-file');
 const imageOverlay = document.querySelector('.img-upload__overlay');
@@ -10,6 +10,7 @@ const effectsLevel = document.querySelector('.effect-level__slider');
 const uploadForm = document.querySelector('.img-upload__form');
 const imageHashtags = document.querySelector('.text__hashtags');
 const imageDescription = document.querySelector('.text__description');
+
 
 const removeForm = () => {
   imageOverlay.classList.add('hidden');
@@ -28,16 +29,11 @@ imgUploadStart.addEventListener('change', () => {
   document.body.classList.add('modal-open');
   effectsLevel.classList.add('hidden');
   uploadForm.addEventListener('change', changeEffect);
+  document.addEventListener('keydown', closeByEscape);
 });
 
 uploadCancel.addEventListener('click', () => {
   removeForm();
-});
-
-document.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    removeForm();
-  }
 });
 
 export {removeForm};

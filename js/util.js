@@ -1,16 +1,16 @@
 const ALERT_ERROR_TIME = 5000;
 
 // Функция для определния случайного числа
-function randomInteger(min, max) {
+const randomInteger = (min, max) => {
   const rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
-}
+};
 
 // Функция для получения уникальных индификаторов
-function createRandomIdFromRangeGenerator (min, max) {
+const createRandomIdFromRangeGenerator = (min, max) => {
   const previousValues = [];
 
-  return function () {
+  return () => {
     let currentValue = randomInteger(min, max);
     if (previousValues.length >= (max - min + 1)) {
       throw new Error(`Перебраны все числа из диапазона от ${min} до ${max}`);
@@ -21,7 +21,7 @@ function createRandomIdFromRangeGenerator (min, max) {
     previousValues.push(currentValue);
     return currentValue;
   };
-}
+};
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
@@ -32,7 +32,7 @@ const errorOutput = (message) => {
   alertContainer.style.zIndex = '10';
   alertContainer.style.position = 'absolute';
   alertContainer.style.left = '25%';
-  alertContainer.style.top = '0';
+  alertContainer.style.top = '10px';
   alertContainer.style.right = '25%';
   alertContainer.style.padding = '10px 3px';
   alertContainer.style.borderRadius = '2px';
@@ -63,14 +63,14 @@ const randomElement = (array, count) => {
   return results;
 };
 
-function debounce (callback, timeoutDelay = 500) {
+const debounce = (callback, timeoutDelay = 500) => {
   let timeoutId;
 
   return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
 
 export {randomInteger, createRandomIdFromRangeGenerator, isEscapeKey, isEnterKey, errorOutput, randomElement, debounce};
 

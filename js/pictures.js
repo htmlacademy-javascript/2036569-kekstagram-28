@@ -7,7 +7,6 @@ const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 const imgFilterForms = document.querySelector('.img-filters__form');
-const imgFilters = document.querySelector('.img-filters');
 const filterDefailt = document.querySelector('#filter-default');
 const filterRandom = document.querySelector('#filter-random');
 const filterDiscussed = document.querySelector('#filter-discussed');
@@ -58,9 +57,9 @@ const changeFilter = (post, cb) => {
 };
 
 const applyingFilter = (post) => {
-  imgFilters.classList.remove('img-filters--inactive');
   newPosts = [...post];
   renderPhoto();
+  document.querySelector('.img-filters').classList.remove('img-filters--inactive');
   changeFilter(post, debounce(() => renderPhoto(), 500));
 };
 

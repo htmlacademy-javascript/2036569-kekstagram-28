@@ -1,5 +1,4 @@
 import {isEscapeKey} from './util.js';
-import {errorOutput} from './util.js';
 import {sendData} from './api.js';
 import {removeForm} from './forms.js';
 
@@ -7,15 +6,15 @@ const HASHTAG_VALID_REGEX = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
 const MAX_SYMBOL_COMMENT = 140;
 const MAX_HASHTAG_NUMBERS = 5;
 
-const imageUpload = document.querySelector('.img-upload__form');
-const imageHashtags = document.querySelector('.text__hashtags');
-const imageDescription = document.querySelector('.text__description');
-const submitButton = document.querySelector('.img-upload__submit');
-
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
   SENDING: 'Публикуется...'
 };
+
+const imageUpload = document.querySelector('.img-upload__form');
+const imageHashtags = document.querySelector('.text__hashtags');
+const imageDescription = document.querySelector('.text__description');
+const submitButton = document.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(imageUpload, {
   classTo: 'img-upload__field-wrapper',
@@ -40,15 +39,25 @@ const closeMessage = (message) => {
   document.body.removeChild(message);
 };
 
+const closeByEscape = () => {
+  if (isEscapeKey) {
+    removeForm();
+    document.removeEventListener('keydown', closeByEscape);
+  }
+};
+
 const closeMessageByEscape = (message) => {
   if (isEscapeKey) {
+    document.body.classList.add('modal-open');
     closeMessage(message);
+    document.addEventListener('keydown', closeByEscape);
   }
 };
 
 const closeMessageByOutside = (evt, message) => {
   if (evt.target.className === 'error' || evt.target.className === 'success') {
     closeMessage(message);
+    document.addEventListener('keydown', closeByEscape);
   }
 };
 
@@ -62,10 +71,14 @@ const messageGenearte = (marker) => {
   const message = messageID.cloneNode(true);
   const button = message.querySelector('button');
   document.body.appendChild(message);
-  button.addEventListener('click',() => closeMessage(message));
+  button.addEventListener('click',() => {
+    closeMessage(message);
+    document.addEventListener('keydown', closeByEscape);
+  });
   message.addEventListener('click', (evt) => {
     closeMessageByOutside(evt, message);
   });
+  document.removeEventListener('keydown', closeByEscape);
   document.addEventListener('keydown', () => {
     closeMessageByEscape(message);
   });
@@ -76,12 +89,12 @@ const success = () => {
   messageGenearte(true);
 };
 
-function validateHashtags (value) {
+const validateHashtags = (value) => {
 
   const hashTagArray = value.toLowerCase().trim().split(' ');
   const uniqueHashTags = [...new Set(hashTagArray)];
 
-  if(uniqueHashTags.length === 1) {
+  if(uniqueHashTags[0] === '') {
     return true;
   }
   for (const hashtag of uniqueHashTags) {
@@ -90,21 +103,21 @@ function validateHashtags (value) {
     }
   }
   return hashTagArray.length <= MAX_HASHTAG_NUMBERS && hashTagArray.length === uniqueHashTags.length;
-}
+};
 
 const validateComment = (value) => value.length <= MAX_SYMBOL_COMMENT;
 
 pristine.addValidator(imageHashtags, validateHashtags, 'Введен неверный Хэш-тег, количество Хэш-тегов не больше 5');
 pristine.addValidator(imageDescription, validateComment, 'Количество символов не должно привышать 140');
 
-const stopWhenFocused = (evt) => {
+const onStopWhenFocused = (evt) => {
   if (isEscapeKey) {
     evt.stopPropagation();
   }
 };
 
-imageDescription.onkeydown = stopWhenFocused;
-imageHashtags.onkeydown = stopWhenFocused;
+imageDescription.onkeydown = onStopWhenFocused;
+imageHashtags.onkeydown = onStopWhenFocused;
 
 const setUserFormSubmit = (onSuccess) => {
   imageUpload.addEventListener('submit', (evt) => {
@@ -116,8 +129,8 @@ const setUserFormSubmit = (onSuccess) => {
       sendData(new FormData(evt.target))
         .then(onSuccess)
         .catch(
-          (err) => {
-            errorOutput(err.message);
+          () => {
+            messageGenearte(false);
           }
         )
         .finally(unblockSubmitButton);
@@ -125,4 +138,4 @@ const setUserFormSubmit = (onSuccess) => {
   });
 };
 
-export {setUserFormSubmit, success};
+export {setUserFormSubmit, success, closeByEscape};

@@ -1,7 +1,7 @@
 const STEP_SCALE = 25;
 const MAX_STEP = 100;
 
-const imageUploadPreview = document.querySelector('.img-upload__preview');
+const imageUploadPreview = document.querySelector('.img-upload__preview img');
 const buttonSmaller = document.querySelector('.scale__control--smaller');
 const buttonBigger = document.querySelector('.scale__control--bigger');
 const valueScale = document.querySelector('.scale__control--value');
