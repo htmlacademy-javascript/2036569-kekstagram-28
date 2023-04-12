@@ -39,16 +39,25 @@ const closeMessage = (message) => {
   document.body.removeChild(message);
 };
 
+const closeByEscape = () => {
+  if (isEscapeKey) {
+    removeForm();
+    document.removeEventListener('keydown', closeByEscape);
+  }
+};
 
 const closeMessageByEscape = (message) => {
   if (isEscapeKey) {
+    document.body.classList.add('modal-open');
     closeMessage(message);
+    document.addEventListener('keydown', closeByEscape);
   }
 };
 
 const closeMessageByOutside = (evt, message) => {
   if (evt.target.className === 'error' || evt.target.className === 'success') {
     closeMessage(message);
+    document.addEventListener('keydown', closeByEscape);
   }
 };
 
@@ -62,10 +71,14 @@ const messageGenearte = (marker) => {
   const message = messageID.cloneNode(true);
   const button = message.querySelector('button');
   document.body.appendChild(message);
-  button.addEventListener('click',() => closeMessage(message));
+  button.addEventListener('click',() => {
+    closeMessage(message);
+    document.addEventListener('keydown', closeByEscape);
+  });
   message.addEventListener('click', (evt) => {
     closeMessageByOutside(evt, message);
   });
+  document.removeEventListener('keydown', closeByEscape);
   document.addEventListener('keydown', () => {
     closeMessageByEscape(message);
   });
@@ -76,7 +89,7 @@ const success = () => {
   messageGenearte(true);
 };
 
-function validateHashtags (value) {
+const validateHashtags = (value) => {
 
   const hashTagArray = value.toLowerCase().trim().split(' ');
   const uniqueHashTags = [...new Set(hashTagArray)];
@@ -90,7 +103,7 @@ function validateHashtags (value) {
     }
   }
   return hashTagArray.length <= MAX_HASHTAG_NUMBERS && hashTagArray.length === uniqueHashTags.length;
-}
+};
 
 const validateComment = (value) => value.length <= MAX_SYMBOL_COMMENT;
 
@@ -125,4 +138,4 @@ const setUserFormSubmit = (onSuccess) => {
   });
 };
 
-export {setUserFormSubmit, success};
+export {setUserFormSubmit, success, closeByEscape};
